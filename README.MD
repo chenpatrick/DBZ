@@ -20,3 +20,4 @@ Pour changer de personnage modifier la <code>String Personnage</code> dans Appli
 Dragon Ball Z est une oeuvre de Akira toriyama,qui va reprendre du service...
 
 
+<img alt = "goku/b4.png">image</img>
