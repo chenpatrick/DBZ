@@ -1,0 +1,701 @@
+
+import java.util.ArrayList ;
+import java.util.Stack ;
+
+
+
+class Noeud{
+public int etiquette;
+private Noeud gauche;
+private Noeud droite;
+private Noeud n1 ;
+private Noeud n2 ;
+private Noeud n3 ;
+
+public  static ArrayList<Integer> li =  new ArrayList<Integer>();
+
+public Noeud(int etiquette, Noeud g, Noeud d){
+this.etiquette = etiquette;
+this.gauche = g;
+this.droite = d;
+}
+
+public Noeud(int etiquette){
+this(etiquette,null,null);
+}
+
+
+public Noeud(int etiquette, Noeud n1, Noeud n2 ,Noeud n3){
+this.etiquette = etiquette;
+this.n1 = n1;
+this.n2 = n2;
+this.n3 = n3 ;
+}
+
+
+
+
+
+
+
+
+public Noeud(int []tab){
+int r = 0;
+
+r = (tab.length/2);
+this.etiquette = tab[r];                                                     
+
+
+int [] tg = new int [r];
+int [] td = new int [tab.length -r +1 ];
+int k =0 ;
+for(int i = 0 ; i < r ; i++)
+tg [i] = tab[i];
+for(int j = r+1 ; j < td.length ; j++ ){
+tg[k] = tab[k] ;
+k++;
+}
+
+
+
+
+
+
+if(tg.length != 0)  gauche = new Noeud(tg);
+
+if(td.length != 0)  droite = new Noeud(td);
+
+}
+
+public void ajout(int n){
+if(n == this.etiquette){
+return;                          
+}
+else if(n > this.etiquette){        
+if(this.droite != null)         
+this.droite.ajout(n);         
+
+else                           
+droite = new Noeud(n);     
+
+}
+else if(this.etiquette > n){       
+if(this.gauche != null)         
+this.gauche.ajout(n);         
+
+else                            
+gauche = new Noeud(n);        
+
+}
+}
+
+
+
+
+
+
+
+public int longueur(){
+int c = 1;
+if(gauche != null){
+c = c + gauche.longueur();
+System.out.print(this.etiquette + "g ");
+
+}
+if(droite != null){
+c = c + droite.longueur();
+System.out.print(this.etiquette + "d ");
+}
+return c;
+}
+
+
+
+public void afficheInfixe(){
+if(gauche != null){
+gauche.afficheInfixe();
+}      
+//System.out.print(etiquette+" "); 
+li.add(etiquette);   
+if(droite != null){
+droite.afficheInfixe();    
+} 
+// System.out.println(li.size());
+}
+
+public void affichePrefixe(){
+System.out.print(etiquette+" "); 
+if(gauche != null){         
+gauche.affichePrefixe();
+}      
+if(droite != null){ 
+droite.affichePrefixe();       
+}
+}
+
+public void affichePostfixe(){
+if(gauche != null){
+gauche.affichePostfixe();
+}
+if(droite != null){
+droite.affichePostfixe();
+}
+System.out.print(etiquette+" ");
+} 
+
+
+public Noeud max (){
+Stack<Noeud> p = new Stack<Noeud> ();
+p.push(this);
+int max = this.etiquette ;
+Noeud m = this ;
+
+while(!p.isEmpty()){
+Noeud n  = p.pop();
+
+
+// System.out.println(n.etiquette);
+if(max < n.etiquette){
+max = n.etiquette ; m = n;}
+
+
+if(n.droite != null) 
+p.push(n.droite);
+if(n.gauche != null)
+p.push(n.gauche);
+
+} 
+return  m;
+
+}
+
+
+public int haut(){
+if(this.gauche == null && this.droite == null)
+return 0 ;
+if(gauche != null) return 1 + gauche.haut();
+if(droite != null) return 1 + droite.haut();
+
+return 1 + Math.max(gauche.haut(),droite.haut());
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+/*recherche en profondeur iteratif */
+public  Noeud recherchepro (int val){//false
+Stack<Noeud> p = new Stack<Noeud> ();
+p.push(this);
+if(this.etiquette == val)
+return this;
+
+while(!p.isEmpty()){
+Noeud n  = p.pop();
+System.out.println(n.etiquette);
+if(n.etiquette == val)
+return n;
+
+if(n.droite != null) 
+p.push(n.droite);
+if(n.gauche != null)
+p.push(n.gauche);
+
+} 
+return null ;
+
+
+}    
+
+
+public int [][] aff(){ 
+ArrayList<Noeud> l =new ArrayList<Noeud>() ;//file
+l.add(this);
+boolean t1 ,t2 ;
+int a1 =this.etiquette; int c =0 ;int e =0 ;
+int i = 0 ; int s  = 1 ;
+int [][] tab = new int[this.maxDepth()][4] ; // 5 == hauteur arbre binaire         
+
+for(int mm= 0 ;mm < tab.length ; mm++){
+for(int nn = 0 ;nn < tab[0].length ; nn++){
+tab[mm][nn] = -42 ;
+}}
+
+
+
+
+while(!l.isEmpty()){
+Noeud n = l.remove(0);
+c ++ ;
+
+
+if(n.gauche != null ){
+l.add(n.gauche);
+t1 =true ;
+}else t1 = false ;
+
+if(n.droite != null){
+l.add(n.droite);
+t2 =true;
+}else t2 =false ;
+
+
+
+if(a1 == n.etiquette){ e ++ ; c = 1 ;}
+if (t1 == true && t2 == true && c == 1 ){ 
+a1 = l.get(l.size() - 2).etiquette ;
+}
+
+if(t1 == true &&  t2 == false && c == 1 || t1 == false && t2 == true && c == 1)
+a1 = l.get(l.size() - 1).etiquette ;     
+if(t1 ==false && t2== false && c == 1){
+c = 0 ;
+}  
+//  System.out.println(e+" n.etiquette = " + n.etiquette);     
+
+tab[e-1][i] = n.etiquette ;
+if(s == e) 
+i++ ;
+else i =0 ;
+
+s = e ;    
+
+
+
+}
+
+for(int ww= 0; ww < tab.length ; ww++){
+for(int j =0 ;j < tab[0].length ;j++){
+System.out.print(tab[ww][j]);
+}
+System.out.println();
+}
+
+return tab ;
+
+}
+
+public int recherche(int [][] t , int n) {
+for(int i = 0 ; i< t.length ;i++){
+for(int j= 0 ;j < t[0].length ; j++){
+if(t[i][j] == n) 
+return (i+1) ;
+
+}
+}
+return 0 ; 
+
+}
+
+
+
+public void affiche1(int [][] t){
+
+
+if(droite != null){
+droite.affiche1(t);
+}      
+//System.out.print(etiquette+" "); 
+
+
+
+
+
+
+int a = recherche(t, etiquette) ;
+if(etiquette == 9 )
+a = 3 ;
+
+// System.out.print("a ="+ a);
+for(int i = 0 ;i < a ; i++){
+System.out.print(" ");
+}
+System.out.print(etiquette);
+System.out.println();
+
+
+if(gauche != null){
+gauche.affiche1‎(t);    
+} 
+
+}
+
+
+
+
+
+
+
+
+
+
+public Noeud chercheBFS(int val){
+if(this.etiquette == val) return this ;
+
+ArrayList<Noeud> l = new ArrayList<Noeud>() ;
+l.add(this);
+System.out.println(l.get(0).etiquette);
+while(l.isEmpty()== false){
+Noeud n = l.remove(0);
+System.out.println(n.etiquette);
+//n.afficheInfixe();
+if(n.etiquette == val ) return n ;
+if(n.gauche != null )
+l.add(n.gauche);
+if(n.droite != null)
+l.add(n.droite);
+
+
+
+}
+return null;
+
+}
+
+
+public int recherche2(int n){
+for(int i=0 ;i< li.size() ; i++){
+if(li.get(i) == n) return i ; 
+}
+return 0 ;
+
+}
+
+
+
+public void affiche2(int [][] t,int si){
+int [][] ar = new int [t.length][si] ;
+// System.out.println(li.size());
+//afficheInfixe();//on met tout dans l'ArrayList
+int a =0 ; int bb =0;
+ArrayList<Noeud> l = new ArrayList<Noeud> ();
+l.add(this);
+while(!l.isEmpty()){
+Noeud n = l.remove(0);
+a = recherche(t,n.etiquette) - 1;
+bb = recherche2(n.etiquette);
+ar[a][bb] = n.etiquette ;
+
+if(n.gauche !=null)
+l.add(n.gauche);
+if(n.droite != null)
+l.add(n.droite);
+}
+
+for(int ii =0 ;ii< ar.length ;ii++){
+for(int jj =0 ;jj< ar[0].length ; jj++){
+if(ar[ii][jj] == 0)  System.out.print("  ");
+else System.out.print(ar[ii][jj]);
+
+
+
+}
+System.out.println();
+}      
+}
+
+
+
+
+
+public void cr(){
+if(gauche != null){
+Noeud n = new Noeud (2,gauche,null);
+this.gauche = n ;
+gauche.gauche.cr();
+
+}
+if(droite != null){
+Noeud n = new Noeud (2,null,droite);
+this.droite = n ;
+droite.droite.cr() ;
+}
+}
+
+
+
+public void bou(){
+Noeud a = this ;
+
+if(a.gauche != null)
+a.gauche.bou();
+
+if(a.droite != null)
+a.droite.bou();
+
+if(droite == null && gauche == null){
+a.gauche = new Noeud(-12);
+a.droite = new Noeud(-12);
+}
+
+} 
+
+public Noeud sa(String c){
+Noeud n = this ;
+
+for(int i=0 ; i < c.length() ; i++){
+if(c.charAt(i) == 'd' && n.droite != null)
+n = n.droite ;
+else if(c.charAt(i) == 'g' && n.gauche != null)
+n = n.gauche ;
+else return null ;
+
+}
+return n ;
+}
+
+
+public void gre(Noeud a , String c){ 
+Noeud n = this.sa(c);
+if(n.droite != null && n.gauche == null)
+n.gauche =  a ;
+
+if(n.droite == null && n.gauche != null){
+System.out.println("sociopathe");
+n.droite =  a ;}
+if(n.droite != null && n.gauche != null){}
+if(n.droite == null && n.gauche == null){
+if(c.charAt(c.length()-1) == 'g') n.gauche = a;
+else n.droite = a;
+}
+
+
+} 
+
+/* public int addall(){
+Stack<Noeud> p =  new Stack<Noeud>() ;
+p.push(this);  int i = 0 ;
+while(!p.isEmpty()){
+Noeud n = p.pop() ; 
+i = i + n.etiquette ;
+if(n.droite != null)
+p.push(n.droite) ;
+if(n.gauche != null)
+p.push(n.gauche);
+
+}
+return i ;
+}*/
+
+public int size() {
+return(size(this));
+}
+
+
+
+public int size(Noeud node) {
+if (node == null) return(0);
+else {
+return(size(node.gauche) + 1 + size(node.droite));
+}
+} 
+
+
+public void mirror(){
+ArrayList<Noeud> ff =  new ArrayList<Noeud>() ;
+ff.add(this);     
+
+while(!ff.isEmpty()){   
+Noeud n = ff.remove(0);
+System.out.println("le noeud en court est " + n.etiquette);
+Noeud t = n.droite ; 
+
+n.droite = n.gauche ; 
+n.gauche =  t ;
+
+if(n.gauche != null)
+ff.add(n.gauche); 
+if(n.droite != null) 
+ff.add(n.droite);
+
+
+
+} 
+}  
+
+public void doub (){
+ArrayList<Noeud> file = new ArrayList<Noeud>() ;
+file.add(this);
+while(!file.isEmpty()){
+Noeud n = file.remove(0) ;
+Noeud gg = n.gauche ;
+n.gauche = new Noeud(n.etiquette);
+n.gauche.gauche = gg ;
+if(n.gauche.gauche != null)
+file.add(n.gauche.gauche);
+if(n.droite != null)
+file.add(n.droite);
+
+}     
+}   
+
+
+public int maxDepth() {//en gros ..la hauteur 
+return(maxDepth(this));
+}
+
+public int maxDepth(Noeud node) {
+if (node==null) {
+return(0);
+}
+else {
+int lDepth = maxDepth(node.gauche);
+int rDepth = maxDepth(node.droite);
+
+// use the larger + 1
+return(Math.max(lDepth, rDepth) + 1);
+}
+} 
+
+public void aaa(){
+Stack<Noeud> p = new Stack<Noeud>() ;
+p.push(this);
+while(!p.isEmpty()){
+Noeud n = p.pop() ;
+
+if(n.droite != null)
+p.push(n.droite);
+if(n.gauche != null)
+p.push(n.gauche);
+if(n.gauche == null && n.droite == null){
+n.droite = new Noeud(12344);
+n.gauche = new Noeud (12344);
+}
+
+}
+}
+public void sup(){
+ArrayList<Noeud> f = new ArrayList<Noeud>() ;
+f.add(this);
+while(!f.isEmpty()){
+Noeud n = f.remove(0);
+
+if(n.gauche != null && n.gauche.gauche != null){
+n.gauche = n.gauche.gauche ;
+}
+if(n.gauche != null)
+f.add(n.gauche);
+if(n.droite != null && n.droite.droite != null){
+n.droite = n.droite.droite ;
+}
+if(n.droite != null) 
+f.add(n.droite);
+}
+}
+
+boolean estdedans(ArrayList<Noeud> p,Noeud n){
+for(int i = 0 ;i < p.size() ; i++){
+if(n == p.get(i))
+return true ;
+
+}
+return false ;
+}
+
+
+
+
+
+public void par(){
+ArrayList<Noeud> f = new ArrayList<Noeud>();
+f.add(this);
+ArrayList<Noeud> b = new ArrayList<Noeud>();
+
+while(!f.isEmpty()){
+Noeud n = f.remove(0); 
+System.out.println(n.etiquette + "  ");
+b.add(n);
+if(n.n1 != null && estdedans(b,n.n1)==false){
+f.add(n.n1);
+
+
+}
+if(n.n2 != null && estdedans(b,n.n2) == false){
+f.add(n.n2);
+
+}
+if(n.n3 != null && estdedans(b,n.n3)==false){
+f.add(n.n3);
+
+}
+// for(int i =0 ;i < b.size() ; i++)
+//System.out.print("le =" +b.get(i).etiquette + "  ");	
+} 
+}
+
+int hauteur() {// = depthmax
+return 1 + Math.max((gauche == null) ? 0 : gauche.hauteur(),(droite == null) ? 0 : droite.hauteur());
+}
+
+public static void main(String[] args){
+/*construction d'un arbre*/
+Noeud a = new Noeud(6,null,new Noeud(8));
+Noeud b = new Noeud(9,new Noeud(2),a);
+Noeud c = new Noeud(5,b,null);
+Noeud d = new Noeud(1,new Noeud(4),null);
+Noeud e = new Noeud(7,new Noeud(2),d);
+Noeud f = new Noeud(3,c,e);
+// f.recherchepro(7) ;
+f.r();
+//f.longueur() ;
+System.out.println("la profondeur est " +f.maxDepth());
+//f.cr();
+//f.bou();
+//System.out.println(f.addall());
+f.sa("g").affichePrefixe();
+
+// f.affichePrefixe();
+System.out.println();
+System.out.println("le max est " +f.max().etiquette);         
+/* f.gre(c,"g");
+f.affichePostfixe();  */
+
+
+// f.doub();
+//f.affichePrefixe();
+
+// System.out.println(f.chercheBFS(3).etiquette) ;   
+//f.aff();*/
+// f.mirror();
+/* f.sup(); 
+f.affichePrefixe();*/
+
+// int [][] h = new int [5][4] ;
+//h = f.aff();
+
+
+/* f.afficheInfixe();
+int si = li.size();
+System.out.println("affichage 3 :");
+f.affiche2(h,si);
+System.out.println();
+System.out.println("affichage 1 :");
+f.affiche1(h);*/
+
+/*construction d'un pseudo-graphe*/
+/*Noeud f = new Noeud(6,null,null,null); 
+Noeud e = new Noeud(5,null,f,null);
+Noeud d = new Noeud (44,null,null,null);
+Noeud b = new Noeud(23,null,null,null) ;
+Noeud c = new Noeud (12, d,b,null);
+Noeud a = new Noeud (987, e, b, c);
+a.par() ;
+*/ 
+
+
+
+
+}
+
+
+
+}
