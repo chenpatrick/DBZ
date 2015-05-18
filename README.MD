@@ -9,6 +9,9 @@ ssj Légendaire Broly.
 </br>
 
 <img src = "goku/pied.png">image</img>
+</br>
+Eventuellement : <img src = "ssj3/nor.png">image</img>
+
 Pour Sangoku : a = frapper
 			b = recharger sa vie
 			c= Kamehameha
@@ -20,7 +23,7 @@ Pour Vegeta : a= frapper
 
 Pour changer de personnage modifier la <code>String Personnage</code> dans Applica.java
 
-Broly (l'adversaire) : <img src = "goku/sayen.png">image</img>
+Broly (l'adversaire) : <img src = "goku/b4.png">image</img>
 
 ==note==
 Dragon Ball Z est une oeuvre de Akira toriyama,qui va reprendre du service...
