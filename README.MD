@@ -6,18 +6,24 @@ Vous incarnez le personnage de Sangoku SSJ 4 OU Vegeta Magin et vous vous battre
 ssj Légendaire Broly.
 
 ===Les touches====
+</br>
+
+<img src = "goku/pied.png">image</img>
 Pour Sangoku : a = frapper
 			b = recharger sa vie
 			c= Kamehameha
 			d = redevenir ssj3
-
+</br>
+<img src = "vegeta/sayen.png">image</img>
 Pour Vegeta : a= frapper 
 		    b=charger sa vie
 
 Pour changer de personnage modifier la <code>String Personnage</code> dans Applica.java
 
+Broly (l'adversaire) : <img src = "goku/sayen.png">image</img>
+
 ==note==
 Dragon Ball Z est une oeuvre de Akira toriyama,qui va reprendre du service...
 
 
-<img src = "goku/b4.png">image</img>
+
