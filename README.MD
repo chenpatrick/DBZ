@@ -27,8 +27,8 @@ Pour changer de personnage modifier la <code>String Personnage</code> dans Appli
 
 Broly (l'adversaire) : <img src = "goku/b4.png">
 
-==note==
-Dragon Ball Z est une oeuvre de Akira toriyama,qui va reprendre du service...
+#Credit
+Dragon Ball Z est une oeuvre de Akira toriyama,les images sont tirés de Dragon Ball hyper Dimension
 
 
 
